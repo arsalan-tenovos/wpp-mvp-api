@@ -1,0 +1,2580 @@
+openapi: 3.0.0
+info:
+  version: 0.0.2
+  description: >-
+    Teneovos REST API gateway. It dynamically proxies REST requests to backend services. Limited to features enabled for WPP Open MVP.
+  title: Tenovos REST API
+servers:
+  - description: Default Server
+    url: https://dev-api.tenovos.net
+  - description: Prod Server
+    url: https://api.tenovos.net
+components:
+  schemas:
+    tenovos_document_Document_Retrieve_Request:
+      type: object
+      properties:
+        ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+        fetches:
+          type: string
+          description: Rule data fields
+        include_deleted:
+          type: boolean
+        external_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+    tenovos_document_Document_Retrieve_Response:
+      type: object
+      properties:
+        documents:
+          items:
+            $ref: '#/components/schemas/tenovos_document_Document'
+          type: array
+    tenovos_document_Document:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Rule data fields
+        kind:
+          type: string
+          description: Rule data fields
+        doc:
+          oneOf:
+            - $ref: '#/components/schemas/google_protobuf_NullValue'
+            - type: number
+              format: double
+            - type: string
+              description: Rule data fields
+            - type: boolean
+            - $ref: '#/components/schemas/google_protobuf_Struct'
+            - $ref: '#/components/schemas/google_protobuf_ListValue'
+        created_dt:
+          $ref: '#/components/schemas/google_protobuf_Timestamp'
+        updated_dt:
+          $ref: '#/components/schemas/google_protobuf_Timestamp'
+        deleted_dt:
+          $ref: '#/components/schemas/google_protobuf_Timestamp'
+    tenovos_document_Document_List_Request:
+      type: object
+      properties:
+        kinds:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+        fetches:
+          type: string
+          description: Rule data fields
+        include_deleted:
+          type: boolean
+        pagination:
+          oneOf:
+            - type: string
+              description: Rule data fields
+            - type: integer
+              format: int64
+    tenovos_document_Document_List_Response:
+      type: object
+      properties:
+        documents:
+          items:
+            $ref: '#/components/schemas/tenovos_document_Document'
+          type: array
+        page_cursor:
+          type: string
+          description: Rule data fields
+    tenovos_document_Document_Link_Request:
+      type: object
+      properties:
+        source_id:
+          type: string
+          description: Rule data fields
+        dest_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+        property_path:
+          type: string
+          description: Rule data fields
+        dest_properties:
+          items:
+            $ref: '#/components/schemas/tenovos_document_Document_DestProperties'
+          type: array
+    tenovos_document_Document_DestProperties:
+      type: object
+      properties:
+        dest_id:
+          type: string
+          description: Rule data fields
+        weight:
+          type: number
+          format: double
+    tenovos_document_Document_Link_Response:
+      type: object
+      properties:
+        dest_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+    tenovos_document_Document_Unlink_Request:
+      type: object
+      properties:
+        source_id:
+          type: string
+          description: Rule data fields
+        dest_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+        property_path:
+          type: string
+          description: Rule data fields
+    tenovos_document_Document_Unlink_Response:
+      type: object
+      properties:
+        dest_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+    tenovos_document_Document_LinkRetrieve_Request:
+      type: object
+      properties:
+        source_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+    tenovos_document_Document_LinkRetrieve_Response:
+      type: object
+      properties:
+        doc_links:
+          items:
+            $ref: '#/components/schemas/tenovos_document_Document_LinkRetrieve_Links'
+          type: array
+    tenovos_document_Document_LinkRetrieve_Links:
+      type: object
+      properties:
+        source_id:
+          type: string
+          description: Rule data fields
+        links:
+          items:
+            $ref: '#/components/schemas/tenovos_document_Document_LinkRetrieve_Link'
+          type: array
+    tenovos_document_Document_LinkRetrieve_Link:
+      type: object
+      properties:
+        dest_id:
+          type: string
+          description: Rule data fields
+        property_path:
+          type: string
+          description: Rule data fields
+    tenovos_document_Document_Query_Request:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Rule data fields
+        verbose:
+          type: boolean
+    tenovos_document_Document_Query_Response:
+      type: object
+      properties:
+        documents:
+          items:
+            $ref: '#/components/schemas/tenovos_document_Document'
+          type: array
+        page_cursor:
+          type: string
+          description: Rule data fields
+        info:
+          $ref: '#/components/schemas/tenovos_document_Document_Query_QueryInfo'
+    tenovos_document_Document_Query_QueryInfo:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Rule data fields
+        timings:
+          $ref: '#/components/schemas/tenovos_document_Document_Query_QueryTimings'
+    tenovos_document_Document_Query_QueryTimings:
+      type: object
+      properties:
+        match:
+          type: number
+          format: double
+        filter:
+          type: number
+          format: double
+        projection:
+          type: number
+          format: double
+    tenovos_document_Document_Update_Request:
+      type: object
+      properties:
+        updates:
+          items:
+            oneOf:
+              - type: string
+                description: Rule data fields
+              - $ref: >-
+                  #/components/schemas/tenovos_document_Document_UpdateDocument_Patch
+              - type: string
+                description: Rule data fields
+          type: array
+    tenovos_document_Document_UpdateDocument_Patch:
+      type: object
+      properties:
+        add:
+          $ref: '#/components/schemas/tenovos_document_Document_UpdateDocument_Add'
+        remove:
+          $ref: '#/components/schemas/tenovos_document_Document_UpdateDocument_Remove'
+        replace:
+          $ref: >-
+            #/components/schemas/tenovos_document_Document_UpdateDocument_Replace
+    tenovos_document_Document_UpdateDocument_Add:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Rule data fields
+        value:
+          oneOf:
+            - $ref: '#/components/schemas/google_protobuf_NullValue'
+            - type: number
+              format: double
+            - type: string
+              description: Rule data fields
+            - type: boolean
+            - $ref: '#/components/schemas/google_protobuf_Struct'
+            - $ref: '#/components/schemas/google_protobuf_ListValue'
+    tenovos_document_Document_UpdateDocument_Remove:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Rule data fields
+    tenovos_document_Document_UpdateDocument_Replace:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Rule data fields
+        value:
+          oneOf:
+            - $ref: '#/components/schemas/google_protobuf_NullValue'
+            - type: number
+              format: double
+            - type: string
+              description: Rule data fields
+            - type: boolean
+            - $ref: '#/components/schemas/google_protobuf_Struct'
+            - $ref: '#/components/schemas/google_protobuf_ListValue'
+    tenovos_document_Document_Update_Response:
+      type: object
+      properties:
+        ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+    tenovos_document_Document_Delete_Request:
+      type: object
+      properties:
+        ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+        external_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+    tenovos_document_Document_Delete_Response:
+      type: object
+      properties:
+        ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+    tenovos_document_Document_Undelete_Request:
+      type: object
+      properties:
+        ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+        external_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+    tenovos_document_Document_Undelete_Response:
+      type: object
+      properties:
+        ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+    tenovos_document_Document_Reindex_Request:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Rule data fields
+    tenovos_document_Document_Reindex_Response:
+      type: object
+      properties:
+        page_cursor:
+          type: string
+          description: Rule data fields
+    tenovos_content_RetrieveUrl_Request:
+      type: object
+      properties:
+        content_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+        representation_type:
+          type: string
+          description: Rule data fields
+        storage_class:
+          type: integer
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+          description: common structs
+        adapter_id:
+          type: string
+          description: Rule data fields
+        adapter_type:
+          type: integer
+          enum:
+            - 0
+            - 2
+            - 3
+            - 5
+        retrieve_properties:
+          oneOf:
+            - type: integer
+              format: int32
+            - type: integer
+              format: int32
+        use_short_links:
+          type: boolean
+        use_dynamic_links:
+          type: boolean
+    tenovos_content_RetrieveUrl_Request_RetrieveProperties:
+      type: object
+      properties:
+        width:
+          type: integer
+          format: int32
+        height:
+          type: integer
+          format: int32
+    tenovos_content_RetrieveUrl_Response:
+      type: object
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/tenovos_content_RetrieveUrl_Response_Item'
+          type: array
+    tenovos_content_RetrieveUrl_Response_Item:
+      type: object
+      properties:
+        content_id:
+          type: string
+          description: Rule data fields
+        url:
+          type: string
+          description: Rule data fields
+        content_properties:
+          oneOf:
+            - $ref: '#/components/schemas/tenovos_content_ContentProperties_Image'
+            - $ref: '#/components/schemas/tenovos_content_ContentProperties_Video'
+            - $ref: '#/components/schemas/tenovos_content_ContentProperties_Document'
+            - type: string
+              description: Rule data fields
+            - type: integer
+              format: int64
+            - type: string
+              description: Rule data fields
+            - type: string
+              description: Rule data fields
+    tenovos_content_ContentProperties:
+      type: object
+      properties:
+        image:
+          $ref: '#/components/schemas/tenovos_content_ContentProperties_Image'
+        video:
+          $ref: '#/components/schemas/tenovos_content_ContentProperties_Video'
+        document:
+          $ref: '#/components/schemas/tenovos_content_ContentProperties_Document'
+        mime_type:
+          type: string
+          description: Rule data fields
+        size:
+          type: integer
+          format: int64
+        filename:
+          type: string
+          description: Rule data fields
+        content_type:
+          type: integer
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+        caption:
+          type: string
+          description: Rule data fields
+    tenovos_content_ContentProperties_Image:
+      type: object
+      properties:
+        width:
+          type: integer
+          format: int32
+        height:
+          type: integer
+          format: int32
+    tenovos_content_ContentProperties_Video:
+      type: object
+      properties:
+        width:
+          type: integer
+          format: int32
+        height:
+          type: integer
+          format: int32
+        duration_ms:
+          type: integer
+          format: int64
+    tenovos_content_ContentProperties_Document:
+      type: object
+      properties:
+        width:
+          type: integer
+          format: int32
+        height:
+          type: integer
+          format: int32
+        pages:
+          type: integer
+          format: int32    
+    tenovos_content_RetrieveInfo_Request:
+      type: object
+      properties:
+        content_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+        representation_type:
+          type: string
+          description: Rule data fields
+        storage_class:
+          type: integer
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+          description: common structs
+        adapter_id:
+          type: string
+          description: Rule data fields
+        adapter_type:
+          type: integer
+          enum:
+            - 0
+            - 2
+            - 3
+            - 5
+        external_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+        content_uris:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+        request_properties:
+          $ref: >-
+            #/components/schemas/tenovos_content_RetrieveInfo_Request_RequestProperties
+    tenovos_content_RetrieveInfo_Request_RequestProperties:
+      type: object
+      properties:
+        description:
+          type: boolean
+        extended_description:
+          type: boolean
+        technical:
+          type: boolean
+    tenovos_content_RetrieveInfo_Response:
+      type: object
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/tenovos_content_RetrieveInfo_Response_Item'
+          type: array
+    tenovos_content_RetrieveInfo_Response_Item:
+      type: object
+      properties:
+        content_id:
+          type: string
+          description: Rule data fields
+        uri:
+          type: string
+          description: Rule data fields
+        content_properties:
+          oneOf:
+            - $ref: '#/components/schemas/tenovos_content_ContentProperties_Image'
+            - $ref: '#/components/schemas/tenovos_content_ContentProperties_Video'
+            - $ref: '#/components/schemas/tenovos_content_ContentProperties_Document'
+            - type: string
+              description: Rule data fields
+            - type: integer
+              format: int64
+            - type: string
+              description: Rule data fields
+            - type: string
+              description: Rule data fields
+        external_id:
+          type: string
+          description: Rule data fields
+        extended_properties:
+          oneOf:
+            - $ref: >-
+                #/components/schemas/tenovos_content_ExtendedProperties_Description
+            - $ref: >-
+                #/components/schemas/tenovos_content_ExtendedProperties_ExtendedDescription
+            - $ref: >-
+                #/components/schemas/tenovos_content_ExtendedProperties_Technical
+        pending_content:
+          type: boolean
+    tenovos_content_ListInfo_Request:
+      type: object
+      properties:
+        adapter_instance_id:
+          type: string
+          description: Rule data fields
+        representation_type:
+          type: string
+          description: Rule data fields
+        pagination:
+          oneOf:
+            - type: string
+              description: Rule data fields
+            - type: integer
+              format: int64
+        filename:
+          type: string
+          description: Rule data fields
+    tenovos_content_Pagination:
+      type: object
+      properties:
+        page_cursor:
+          type: string
+          description: Rule data fields
+        max_size:
+          type: integer
+          format: int64
+    tenovos_content_ListInfo_Response:
+      type: object
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/tenovos_content_ListInfo_Response_Item'
+          type: array
+        page_cursor:
+          type: string
+          description: Rule data fields
+    tenovos_content_ListInfo_Response_Item:
+      type: object
+      properties:
+        content_id:
+          type: string
+          description: Rule data fields
+        uri:
+          type: string
+          description: Rule data fields
+        representation_type:
+          type: string
+          description: Rule data fields
+        content_properties:
+          oneOf:
+            - $ref: '#/components/schemas/tenovos_content_ContentProperties_Image'
+            - $ref: '#/components/schemas/tenovos_content_ContentProperties_Video'
+            - $ref: '#/components/schemas/tenovos_content_ContentProperties_Document'
+            - type: string
+              description: Rule data fields
+            - type: integer
+              format: int64
+            - type: string
+              description: Rule data fields
+            - type: string
+              description: Rule data fields
+        external_id:
+          type: string
+          description: Rule data fields
+        extended_properties:
+          oneOf:
+            - $ref: >-
+                #/components/schemas/tenovos_content_ExtendedProperties_Description
+            - $ref: >-
+                #/components/schemas/tenovos_content_ExtendedProperties_ExtendedDescription
+            - $ref: >-
+                #/components/schemas/tenovos_content_ExtendedProperties_Technical
+        pending_content:
+          type: boolean
+        created_at:
+          $ref: '#/components/schemas/google_protobuf_Timestamp'
+        deleted_at:
+          $ref: '#/components/schemas/google_protobuf_Timestamp'
+    tenovos_content_ExtendedProperties:
+      type: object
+      properties:
+        description:
+          oneOf:
+            - type: string
+              description: Rule data fields
+        extended_description:
+          oneOf:
+            - type: string
+              description: Rule data fields
+        technical:
+          $ref: '#/components/schemas/tenovos_content_ExtendedProperties_Technical'
+    tenovos_content_ExtendedProperties_Description:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Rule data fields
+    tenovos_content_ExtendedProperties_ExtendedDescription:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Rule data fields
+    tenovos_content_ExtendedProperties_Technical:
+      type: object
+      properties: {}
+    google_protobuf_Timestamp:
+      type: object
+      properties:
+        seconds:
+          type: integer
+          format: int64
+        nanos:
+          type: integer
+          format: int32
+    google_protobuf_NullValue: {}
+    google_protobuf_Value:
+      type: object
+      properties:
+        nullValue:
+          type: integer
+          enum:
+            - 0
+        numberValue:
+          type: number
+          format: double
+        stringValue:
+          type: string
+          description: Rule data fields
+        boolValue:
+          type: boolean
+        structValue:
+          $ref: '#/components/schemas/google_protobuf_Struct'
+        listValue:
+          $ref: '#/components/schemas/google_protobuf_ListValue'
+    google_protobuf_Struct:
+      type: object
+      properties:
+        fields:
+          oneOf:
+            - $ref: '#/components/schemas/google_protobuf_NullValue'
+            - type: number
+              format: double
+            - type: string
+              description: Rule data fields
+            - type: boolean
+            - $ref: '#/components/schemas/google_protobuf_Struct'
+            - $ref: '#/components/schemas/google_protobuf_ListValue'
+    google_protobuf_ListValue:
+      type: object
+      properties:
+        values:
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/google_protobuf_NullValue'
+              - type: number
+                format: double
+              - type: string
+                description: Rule data fields
+              - type: boolean
+              - $ref: '#/components/schemas/google_protobuf_Struct'
+              - $ref: '#/components/schemas/google_protobuf_ListValue'
+          type: array
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: API Key authentication using Bearer token
+paths:
+  /api/v1/document/retrieve:
+    post:
+      tags:
+        - Document Service
+      operationId: tenovos.document.DocumentService.Retrieve
+      description: >-
+        Retrieves one or more documents by internal ID or external ID, with
+        optional field projection and soft-delete inclusion.
+
+
+        Request:
+
+        ids               - List of internal document IDs to retrieve.
+
+        external_ids      - List of external IDs to retrieve documents by.
+
+        fetches           - Optional field projection expression limiting which
+        document fields are returned.
+
+        include_deleted   - When true, includes soft-deleted documents in the
+        results.
+
+
+        Response:
+
+        documents   - List of Document objects (id, kind, doc body, timestamps).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_document_Document_Retrieve_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/tenovos_document_Document_Retrieve_Response
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/document/list:
+    post:
+      tags:
+        - Document Service
+      operationId: tenovos.document.DocumentService.List
+      description: >-
+        Lists documents filtered by one or more kind names, with optional field
+        projection and cursor-based pagination.
+
+
+        Request:
+
+        kinds             - List of Kind names to filter by.
+
+        fetches           - Optional field projection expression limiting which
+        document fields are returned.
+
+        include_deleted   - When true, includes soft-deleted documents in the
+        results.
+
+        pagination        - Optional Pagination cursor and page size.
+
+
+        Response:
+
+        documents     - List of Document objects matching the filter.
+
+        page_cursor   - Opaque cursor for the next page. Absent when there are
+        no further results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_document_Document_List_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenovos_document_Document_List_Response'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/document/link:
+    post:
+      tags:
+        - Document Service
+      operationId: tenovos.document.DocumentService.Link
+      description: >-
+        Creates directional links from a source document to one or more
+        destination documents at a specified property path.
+
+
+        Request:
+
+        source_id         - ID of the document to link from.
+
+        dest_ids          - List of destination document IDs to link to.
+
+        property_path     - The field path on the source document that
+        represents this relationship.
+
+        dest_properties   - Optional per-destination properties. Each entry
+        specifies dest_id and an
+
+        optional weight used for ordering or scoring the relationship.
+
+
+        Response:
+
+        dest_ids   - IDs of the destination documents that were successfully
+        linked.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_document_Document_Link_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenovos_document_Document_Link_Response'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/document/unlink:
+    post:
+      tags:
+        - Document Service
+      operationId: tenovos.document.DocumentService.Unlink
+      description: >-
+        Removes links from a source document to one or more destination
+        documents at a specified property path.
+
+
+        Request:
+
+        source_id       - ID of the document to remove links from.
+
+        dest_ids        - List of destination document IDs to unlink.
+
+        property_path   - The field path on the source document where the links
+        reside.
+
+
+        Response:
+
+        dest_ids   - IDs of the destination documents that were successfully
+        unlinked.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_document_Document_Unlink_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenovos_document_Document_Unlink_Response'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/document/retrieve-links:
+    post:
+      tags:
+        - Document Service
+      operationId: tenovos.document.DocumentService.RetrieveLinks
+      description: >-
+        Retrieves all outbound links for one or more source documents, returning
+        destination IDs and property paths.
+
+
+        Request:
+
+        source_ids   - List of source document IDs whose links to retrieve.
+
+
+        Response:
+
+        doc_links   - List of Links objects, one per source document. Each
+        contains the source_id
+
+        and a list of Link entries (dest_id and property_path) representing all
+
+        outbound relationships.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/tenovos_document_Document_LinkRetrieve_Request
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/tenovos_document_Document_LinkRetrieve_Response
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/document/query:
+    post:
+      tags:
+        - Document Service
+      operationId: tenovos.document.DocumentService.Query
+      description: >-
+        Executes a query expression against all documents, returning matching
+        results and optional execution timing info.
+
+
+        Request:
+
+        query     - Query expression string to evaluate against documents.
+
+        verbose   - When true, includes per-phase execution timing information
+        in the response.
+
+
+        Response:
+
+        documents     - List of Document objects matching the query.
+
+        page_cursor   - Opaque cursor for the next page of results.
+
+        info          - Optional QueryInfo containing the normalized query
+        string and timing
+
+        breakdown (match, filter, projection phases) when verbose is true.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_document_Document_Query_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenovos_document_Document_Query_Response'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/document/update:
+    post:
+      tags:
+        - Document Service
+      operationId: tenovos.document.DocumentService.Update
+      description: >-
+        Applies a sequence of patch operations (add, remove, replace) to one or
+        more existing documents.
+
+
+        Request:
+
+        updates   - List of update operations. Each UpdateDocument entry
+        includes:
+
+        id          - Optional internal document ID to target.
+
+        external_id - Optional external ID to target (alternative to id).
+
+        patches     - Ordered list of patch operations. Each Patch is one of:
+
+        Add(path, value) — inserts a value at the given JSON path.
+
+        Remove(path)     — removes the field at the given JSON path.
+
+        Replace(path, value) — replaces the value at the given JSON path.
+
+
+        Response:
+
+        ids   - IDs of the documents that were successfully updated.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_document_Document_Update_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenovos_document_Document_Update_Response'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/document/delete:
+    post:
+      tags:
+        - Document Service
+      operationId: tenovos.document.DocumentService.Delete
+      description: >-
+        Soft-deletes one or more documents; deleted documents remain retrievable
+        when include_deleted is set.
+
+
+        Request:
+
+        ids            - List of internal document IDs to soft-delete.
+
+        external_ids   - List of external IDs to soft-delete by (alternative to
+        ids).
+
+
+        Response:
+
+        ids   - IDs of the documents that were successfully deleted.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_document_Document_Delete_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenovos_document_Document_Delete_Response'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/document/undelete:
+    post:
+      tags:
+        - Document Service
+      operationId: tenovos.document.DocumentService.Undelete
+      description: >-
+        Restores one or more soft-deleted documents, making them active again.
+
+
+        Request:
+
+        ids            - List of internal document IDs to restore.
+
+        external_ids   - List of external IDs to restore by (alternative to
+        ids).
+
+
+        Response:
+
+        ids   - IDs of the documents that were successfully restored.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_document_Document_Undelete_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/tenovos_document_Document_Undelete_Response
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/document/reindex:
+    post:
+      tags:
+        - Document Service
+      operationId: tenovos.document.DocumentService.Reindex
+      description: >-
+        Triggers reindexing of all documents matching a given query expression,
+        returning a cursor for paginated progress.
+
+
+        Request:
+
+        query   - Query expression identifying the documents to reindex.
+
+
+        Response:
+
+        page_cursor   - Cursor to pass in a subsequent request to continue
+        reindexing the next page.
+
+        Absent when reindexing is complete.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_document_Document_Reindex_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/tenovos_document_Document_Reindex_Response
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/content/retrieve-url:
+    post:
+      tags:
+        - Content Service
+      operationId: tenovos.content.ContentService.RetrieveUrl
+      description: >-
+        Generates presigned time-limited download URLs for one or more content
+        items.
+
+
+        Request:
+
+        content_ids            - List of content IDs to generate URLs for.
+
+        representation_type    - Optional rendition to retrieve (e.g.
+        "original", "preview").
+
+        storage_class          - Optional storage class to target.
+
+        adapter_id             - Optional specific adapter to source from.
+
+        adapter_type           - Optional adapter type to source from.
+
+        retrieve_properties    - Optional width/height hints for image resizing
+        at the CDN.
+
+        use_short_links        - When true, generates shortened URLs.
+
+        use_dynamic_links      - When true, generates CDN dynamic links.
+
+
+        Response:
+
+        items   - List of results each containing content_id, the presigned URL,
+        and
+
+        the associated ContentProperties (mime_type, dimensions, size,
+        filename).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_content_RetrieveUrl_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenovos_content_RetrieveUrl_Response'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/content/retrieve-info:
+    post:
+      tags:
+        - Content Service
+      operationId: tenovos.content.ContentService.RetrieveInfo
+      description: >-
+        Retrieves metadata for one or more content items without generating
+        download URLs.
+
+
+        Request:
+
+        content_ids            - List of content IDs to look up.
+
+        representation_type    - Optional rendition to retrieve.
+
+        storage_class          - Optional storage class to target.
+
+        adapter_id             - Optional adapter to target.
+
+        adapter_type           - Optional adapter type to target.
+
+        external_ids           - Optional external IDs to look up content by.
+
+        content_uris           - Optional raw URIs to look up content by.
+
+        request_properties     - Flags controlling which optional fields to
+        include
+
+        (description, extended_description, technical).
+
+
+        Response:
+
+        items   - List of results each containing content_id, URI,
+        ContentProperties,
+
+        optional external_id, optional ExtendedProperties, and a pending_content
+
+        flag indicating the file upload is not yet complete.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_content_RetrieveInfo_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenovos_content_RetrieveInfo_Response'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
+  /api/v1/content/list-info:
+    post:
+      tags:
+        - Content Service
+      operationId: tenovos.content.ContentService.ListInfo
+      description: >-
+        Lists all content representations stored within a specific adapter
+        instance, with pagination.
+
+
+        Request:
+
+        adapter_instance_id   - ID of the adapter whose content to list.
+
+        pagination            - Optional Pagination cursor and page size.
+
+
+        Response:
+
+        items         - List of content items including content_id, URI,
+        ContentProperties,
+
+        external_id, ExtendedProperties, and pending status.
+
+        page_cursor   - Opaque cursor for the next page. Absent when there are
+        no further results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_content_ListInfo_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenovos_content_ListInfo_Response'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
