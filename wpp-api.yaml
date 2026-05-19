@@ -11,6 +11,45 @@ servers:
     url: https://api.tenovos.net
 components:
   schemas:
+    tenovos_document_Document_Create_Request:
+      type: object
+      properties:
+        documents:
+          items:
+            $ref: '#/components/schemas/tenovos_document_Document_Create'
+          type: array
+    tenovos_document_Document_Create:
+      type: object
+      properties:
+        kind:
+          type: string
+          description: Rule data fields
+        doc:
+          oneOf:
+            - $ref: '#/components/schemas/google_protobuf_NullValue'
+            - type: number
+              format: double
+            - type: string
+              description: Rule data fields
+            - type: boolean
+            - $ref: '#/components/schemas/google_protobuf_Struct'
+            - $ref: '#/components/schemas/google_protobuf_ListValue'
+        external_id:
+          type: string
+          description: Rule data fields
+    tenovos_document_Document_Create_Response:
+      type: object
+      properties:
+        ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array
+        existing_ids:
+          items:
+            type: string
+            description: Rule data fields
+          type: array    
     tenovos_document_Document_Retrieve_Request:
       type: object
       properties:
@@ -748,6 +787,147 @@ components:
       bearerFormat: JWT
       description: API Key authentication using Bearer token
 paths:
+  /api/v1/document/create:
+    post:
+      tags:
+        - Document Service
+      operationId: tenovos.document.DocumentService.Create
+      description: >-
+        Creates one or more documents of a given kind, returning the IDs of
+        newly created documents and any pre-existing duplicates.
+
+
+        Request:
+
+        documents     - List of documents to create. Each entry includes:
+
+        kind        - The Kind name this document belongs to.
+
+        doc         - The document body as an arbitrary JSON value.
+
+        external_id - Optional identifier from an external system for
+        deduplication and cross-reference.
+
+
+        Response:
+
+        ids            - IDs of the newly created documents.
+
+        existing_ids   - IDs of pre-existing documents that matched by
+        external_id (not re-created).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenovos_document_Document_Create_Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenovos_document_Document_Create_Response'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '429':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '499':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '501':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '503':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '504':
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - bearerAuth: []
   /api/v1/document/retrieve:
     post:
       tags:
