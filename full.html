@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.29.1/swagger-ui.css">
+<title>Tenovos API - WPP Open</title>
+<body>
+<div id="openapi">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.29.1/swagger-ui-bundle.js"></script>
+<script>
+window.onload = function () {
+  const ui = SwaggerUIBundle({
+    url: "/wpp-mvp-api/full-api.yaml",
+    dom_id: "#openapi"
+  })
+}
+</script>
+</body>
